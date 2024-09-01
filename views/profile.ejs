@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body id="profile">
+
+	<%- include('partials/navbar.ejs') %>
+
+    <main class="main pt-3 pt-lg-4">
+      <div class="container mt-5">
+        <div class="row d-flex justify-content-start">
+
+
+
+
+          <div id="userInformation" class="col-12 col-lg-6 col-xl-9 row d-flex justify-content-center p-1 pt-0 m-0 pe-lg-4">
+            <div class="max-width p-0">
+
+              <div style="height:33em;" id="profile-card" class="bg-white mt-1 mt-lg-0 px-3 py-2">
+                <div class="mb-2">
+                  <img src="/img/background.svg">
+                  <img class="me-3" id="profile-page-photo" src="">
+                </div>
+                <div class="px-3" id="userInformation">
+                  <h2 id="userName" class="fw-bold"></h2>
+                  <p id="currentJob"></p>
+                  
+                  <div class="d-flex small">
+                  	<p class="me-1" id="currentLocation"></p>
+                  	-
+                  	<a id="contactInfo" style="cursor:pointer;" class="text-primary fw-bold mx-1">Informacion de contacto</a>
+                  </div>
+                  
+                  <div id="userButtons">
+                  	<a type="Button" id="connectButton" class="fw-bold px-3 btn btn-primary rounded-pill">+ Conectar</a>
+                  	<a type="Button" id="followButton" class="fw-bold px-3 btn btn-primary rounded-pill">+ Seguir</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+    
+
+
+
+
+          </div>
+
+
+      </div>
+    </main>
+
+
+
+	  <div class="fs-6 modal modal fade" id="contactInfoModal" tabindex="-1" aria-hidden="true">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<h1 id="userNameModal" class="modal-title fs-5 fw-bold"></h1>
+        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	  			</div>
+	  			<div class="modal-body">
+	  				<section class="mb-4">
+              			<h6>Informacion de contacto</h6>
+              			<p id="userEmail" class="small my-0">Correo electronico: </p>
+              			<p id="userPhone" class="small my-0">Telefono: </p>
+					</section>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		<div class="fs-6 modal modal fade" id="addUserExperienceModal" tabindex="-1" aria-hidden="true">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<h1 id="userNameModal" class="modal-title fs-5 fw-bold">Agregar experiencia laboral</h1>
+        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	  			</div>
+	  			<div class="modal-body">
+	  				<section class="mb-2">
+							<label for="">Puesto</label>
+					</section>
+					<section class="mb-4">
+						<input id="jobPosition" class="form-control" name="" type="text" value="" placeholder="Puesto de trabajo"/>
+					</section>
+	  			
+	  				<section class="mb-2">
+						<label for="">Empresa</label>
+					</section>
+					<section class="mb-4">
+						<select id="companies" class="form-select" aria-label="Default select example">
+							<option value="0" selected>Seleccionar empresa</option>
+						</select>
+					</section>
+					
+					<section class="mb-2">
+						<label for="">Fecha inicio</label>
+					</section>
+	  				<section class="mb-4">
+						<input class="form-control" id="experienceStartDate" type="date">
+					</section>
+					
+					<section class="mb-2">
+						<label for="">Fecha fin</label>
+					</section>
+	  				<section class="mb-4">
+						<input class="form-control" id="experienceEndDate" type="date">
+					</section>
+				</div>
+				<div class="modal-footer">
+        				<button id="sendExperienceButton" type="button" class="btn btn-primary">Agregar</button>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+		<div class="fs-6 modal modal fade" id="addUserEducationModal" tabindex="-1" aria-hidden="true">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<h1 id="userNameModal" class="modal-title fs-5 fw-bold">Agregar educacion</h1>
+        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	  			</div>
+	  			<div class="modal-body">
+	  				
+	  				<section class="mb-2">
+							<label for="">Titulo</label>
+					</section>
+					<section class="mb-4">
+						<input id="educationTitle" class="form-control" name="" type="text" value="" placeholder="Titulo"/>
+					</section>
+	  			
+	  				<section class="mb-2">
+						<label for="">Institucion</label>
+					</section>
+					<section class="mb-4">
+						<select id="educationSchools" class="form-select" aria-label="Default select example">
+							<option value="0" selected>Seleccionar institucion</option>
+						</select>
+					</section>
+					
+					<section class="mb-2">
+						<label for="">Fecha inicio</label>
+					</section>
+	  				<section class="mb-4">
+						<input class="form-control" id="educationStartDate" type="date">
+					</section>
+					
+					<section class="mb-2">
+						<label for="">Fecha fin</label>
+					</section>
+	  				<section class="mb-4">
+						<input class="form-control" id="educationEndDate" type="date">
+					</section>
+				</div>
+				<div class="modal-footer">
+        				<button id="sendEducationButton" type="button" class="btn btn-primary">Agregar</button>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+		<div class="fs-6 modal modal fade" id="addUserAchievementsModal" tabindex="-1" aria-hidden="true">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<h1 id="userNameModal" class="modal-title fs-5 fw-bold">Agregar logro</h1>
+        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	  			</div>
+	  			<div class="modal-body">
+	  			
+	  				<section class="mb-2">
+							<label for="">Titulo</label>
+					</section>
+					<section class="mb-4">
+						<input id="achievementTitle" class="form-control" name="" type="text" value="" placeholder="Titulo"/>
+					</section>
+	  			
+	  				<section class="mb-2">
+						<label for="">Institucion</label>
+					</section>
+	  				<section class="mb-4">
+						<select id="achievementSchools" class="form-select" aria-label="Default select example">
+							<option value="0" selected>Seleccionar institucion</option>
+						</select>
+					</section>
+					
+					<section class="mb-2">
+						<label for="">Tipo de logro</label>
+					</section>
+	  				<section class="mb-4">
+						<select id="achievementTypes" class="form-select" aria-label="Default select example">
+							<option value="0" selected>Seleccionar tipo de logro</option>
+						</select>
+					</section>
+					
+					<section class="mb-2">
+						<label for="">Fecha de obtencion</label>
+					</section>
+	  				<section class="mb-4">
+						<input class="form-control" id="achievementDate" type="date">
+					</section>
+				</div>
+				<div class="modal-footer">
+        				<button id="sendAchievementButton" type="button" class="btn btn-primary">Agregar</button>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
+	
+		<div class="fs-6 modal modal fade" id="addUserSkillsModal" tabindex="-1" aria-hidden="true">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<h1 id="userNameModal" class="modal-title fs-5 fw-bold">Agregar habilidad</h1>
+        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	  			</div>
+	  			<div class="modal-body">
+	  				<section class="mb-4">
+						<select id="skills" class="form-select" aria-label="Default select example">
+							<option value="0" selected>Seleccionar habilidad</option>
+						</select>
+					</section>
+				</div>
+				<div class="modal-footer">
+        				<button id="sendSkillButton" type="button" class="btn btn-primary">Agregar</button>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		
+
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/Profile.js"></script>
+    <script>
+    	document.querySelector("a#followButton").addEventListener("click", Profile.follow.bind(null));
+    	document.querySelector("a#connectButton").addEventListener("click", Profile.connect.bind(null));
+    	
+    	document.querySelector("button#sendSkillButton").addEventListener("click", Profile.addSkill.bind(null, document.querySelector("select#skills")));
+    	//
+    	document.querySelector("button#sendAchievementButton").
+    		addEventListener("click", Profile.addAchievement.bind(null,
+    				document.querySelector("input#achievementTitle"),
+    				document.querySelector("select#achievementSchools"),
+    				document.querySelector("select#achievementTypes"),
+    				document.querySelector("input#achievementDate")
+    			)
+    		);
+    	//
+    	document.querySelector("button#sendEducationButton").
+    		addEventListener("click", Profile.addEducation.bind(null,
+    				document.querySelector("input#educationTitle"),
+    				document.querySelector("select#educationSchools"),
+    				document.querySelector("input#educationStartDate"),
+    				document.querySelector("input#educationEndDate")
+    			)
+    		);
+    	//
+    	document.querySelector("button#sendExperienceButton").
+    		addEventListener("click", Profile.addExperience.bind(null,
+    				document.querySelector("input#jobPosition"),
+    				document.querySelector("select#companies"),
+    				document.querySelector("input#experienceStartDate"),
+    				document.querySelector("input#experienceEndDate")
+    			)
+    		);
+    </script>
+  </body>
+</html>

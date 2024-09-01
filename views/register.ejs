@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" media="all" />
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Join LinkedIn</title>
+  </head>
+  <body>
+
+    <nav class="navbar">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img src="/img/logo.png" alt="Logo" width="120" height="40" class="d-inline-block align-text-top">
+        </a>
+      </div>
+    </nav>
+
+    <h2 style="text-align:center">Sácale el máximo a tu vida profesional</h2>
+    <div class="d-flex justify-content-center container mt-2">
+      <div class="col-lg-4">
+        <div class="p-4 shadow form-input mt-2">
+        
+          <label class="fw-bold small">Nombre</label>
+          <input id="name" class="px-3 form-control border-2 mb-3" type="text">
+          
+          <label class="fw-bold small">Apellido</label>
+          <input id="lastName" class="px-3 form-control border-2 mb-3" type="text">
+          
+          <label class="fw-bold small">Correo electronico</label>
+          <input id="email" class="px-3 form-control border-2 mb-3" type="text">
+          
+          <label class="fw-bold small">Contrasena</label>
+          <input id="password" class="px-3 form-control border-2 mb-3" type="password">
+          
+          <label class="fw-bold small">Lugar de nacimiento</label>
+          <div class="mb-3 ">
+			  <select id="pBirth" class="form-control border-2" aria-label="Default select example">
+				  <option value="1" selected>Seleccione un lugar</option>
+
+				  <% places.forEach(place => { %>
+				  	<option><%=place.join(', ')%></option>
+				  <% }); %>
+
+			  </select>
+		  </div>
+		  
+		  <label class="fw-bold small">Lugar de residencia</label>
+          <div class="mb-3 ">
+			  <select id="residence" class="form-control border-2" aria-label="Default select example">
+				  <option value="1" selected>Seleccione un lugar</option>
+
+				  <% places.forEach(place => { %>
+				  	<option><%=place.join(', ')%></option>
+				  <% }); %>
+
+			  </select>
+		  </div>
+		  
+		  <label class="fw-bold small">Numero de telefono</label>
+          <input id="phone" class="px-3 form-control border-2 mb-3" type="text">
+          
+          <label class="fw-bold small">Fecha de nacimiento</label>
+          <input id="dateB" class="px-3 form-control border-2 mb-3" type="date">
+          
+	  	  <p class="my-3 text-secondary" style="text-align:center;font-size:11px;">Al hacer clic en Aceptar, aceptas el Acuerdo de usuario, la Política de privacidad y la Política de cookies de LinkedIn.</p>
+          <div class="mt-4">
+            <a id="sendButton" type="button" class="form-control btn btn-primary rounded-pill px-2 fw-bold">Aceptar</a>
+          </div>
+          <div id="answer" class="mt-4 fw-bold"></div>
+        </div>
+      </div>
+    </div>
+    
+	<script src="/js/Register.js"></script>
+	<script>
+		
+		const name = document.querySelector("input#name");
+		const lastName = document.querySelector("input#lastName");
+		const email = document.querySelector("input#email");
+		const password = document.querySelector("input#password");
+		const pBirth = document.querySelector("select#pBirth");
+		const residence = document.querySelector("select#residence");
+		const phone = document.querySelector("input#phone");
+		const dateB = document.querySelector("input#dateB");
+		
+		const sendButton = document.querySelector("a#sendButton");
+		sendButton.addEventListener("click", Register.send.bind(null, name, lastName, email, password, pBirth, residence, phone, dateB));
+	</script>
+  </body>
+</html>

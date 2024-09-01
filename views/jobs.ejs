@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/Job.js"></script>
+  </head>
+  <body id="jobs">
+
+    <%- include('partials/navbar.ejs') %>
+
+    <main id="jobs" class="py-2 d-flex flex-column align-items-center">
+
+	    <% jobs.forEach((job) => { %>
+	    	<div style="border-radius:10px;width:55vw;" class="bg-white my-3 p-3" >
+			<p class="small">
+				<a style="cursor:pointer;" class="h4 fw-bold" id="job-<%=job[0]%>"><%=job[1]%></a>
+
+				<script>
+					document.querySelector(`a#job-<%=job[0]%>`).
+						addEventListener("click", Job.showJobModal.bind(
+							null,
+							`<%=job[0]%>`,
+							`<%=job[1]%>`,
+							`<%=job[5]%>`,
+							`<%=job[6]%>`,
+							`<%=job[4]%>`,
+							`<%=job[2]%>`,
+							`<%=job[3]%>`
+						));
+				</script>
+
+				<br>
+				<%=job[5]%>
+			</p>
+		</div>
+	    <% }); %>
+
+    </main>
+
+
+
+	  <div class="fs-6 modal-lg modal fade" id="showJobModal" tabindex="-1" aria-hidden="true">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content p-3">
+	  			<div class="modal-header">
+	  				<h1 id="jobTitle" class="modal-title fs-7 fw-bold"></h1>
+        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	  			</div>
+	  			<div class="modal-body">
+					<div class="d-flex align-items-center">
+						<img class="me-2 job-company-photo" style="border-radius:100px;" src="/img/profile1.png">
+						<p id="company" class="fw-bold"></p>
+					</div>
+					<p id="information" class="small mt-2"></p>
+					
+					<div class="d-flex">
+						<strong class="small me-2">Modalidad:</strong><p id="type" class="small"></p>
+					</div>
+					
+					<p class="small"><strong>Habilidades:</strong><p id="skillsList"></p></p>
+	  				<section class="my-4 d-flex flex-column">
+						<p class="h5 fw-bold m-0">Acerca del puesto</p>
+						<p id="jobDescription" class="mb-3 small"></p>
+						<img id="jobImage">
+					</section>
+					<div class="modal-footer">
+        	  				<button id="sendButton" type="button" class="btn btn-primary fw-bold">Aplicar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
