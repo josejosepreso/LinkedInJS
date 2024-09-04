@@ -6,7 +6,7 @@
   </head>
   <body id="profile">
 
-	<%- include('partials/navbar.ejs') %>
+    <%- include('partials/navbar.ejs', {photo:user.photo, id:user.id}) %>
 
     <main class="main pt-3 pt-lg-4">
       <div class="container mt-5">
@@ -21,24 +21,111 @@
               <div style="height:33em;" id="profile-card" class="bg-white mt-1 mt-lg-0 px-3 py-2">
                 <div class="mb-2">
                   <img src="/img/background.svg">
-                  <img class="me-3" id="profile-page-photo" src="">
+		  <img class="me-3" id="profile-page-photo" src="/img/<%=personalInfo[1]%>">
                 </div>
                 <div class="px-3" id="userInformation">
-                  <h2 id="userName" class="fw-bold"></h2>
-                  <p id="currentJob"></p>
+		  <h2 id="userName" class="fw-bold"><%=personalInfo[0]%></h2>
+		  <p id="currentJob"><%=personalInfo[2]%></p>
                   
                   <div class="d-flex small">
-                  	<p class="me-1" id="currentLocation"></p>
+			<p class="me-1" id="currentLocation"><%=personalInfo[4]%></p>
                   	-
                   	<a id="contactInfo" style="cursor:pointer;" class="text-primary fw-bold mx-1">Informacion de contacto</a>
                   </div>
                   
-                  <div id="userButtons">
-                  	<a type="Button" id="connectButton" class="fw-bold px-3 btn btn-primary rounded-pill">+ Conectar</a>
-                  	<a type="Button" id="followButton" class="fw-bold px-3 btn btn-primary rounded-pill">+ Seguir</a>
-                  </div>
+		  <% if(!flag) { %>
+                  	<div id="userButtons">
+                  		<a type="Button" id="connectButton" class="fw-bold px-3 btn btn-primary rounded-pill">+ Conectar</a>
+                  		<a type="Button" id="followButton" class="fw-bold px-3 btn btn-primary rounded-pill">+ Seguir</a>
+                  	</div>
+		  <% } %>
+
+
+
+
                 </div>
               </div>
+
+
+		  <% if(personalInfo[5]) { %>
+		  	<div class="mt-3 max-width p-4 bg-white" style="border-radius:10px;">
+		  	      <h4 class="fw-bold">Acerca de</h4>
+		  	      <p class="small"><%=personalInfo[5]%></p>
+		  	</div>
+		  <% } %>
+
+
+		  <% if(experiences) { %>
+		  	<div class="mt-3 max-width p-4 bg-white" style="border-radius:10px;">
+		  		<h4 class="fw-bold">Experiencia Laboral</h4>
+				<div>
+		  			<% experiences.forEach((experience) => { %>
+						<p class="small">
+							<strong><%=experience[0]%></strong>
+							</br>
+							<%=experience[1]%>
+							</br>
+							<%=experience[2]%>
+						</p>
+					<% }); %>
+				</div>
+			</div>
+		  <% } %>
+
+
+		  <% if(education) { %>
+		  	<div class="mt-3 max-width p-4 bg-white" style="border-radius:10px;">
+		  		<h4 class="fw-bold">Educacion</h4>
+				<div>
+		  			<% education.forEach((educationTitle) => { %>
+						<p class="small">
+							<strong><%=educationTitle[0]%></strong>
+							</br>
+							<%=educationTitle[1]%>
+							</br>
+							<%=educationTitle[2]%>
+						</p>
+					<% }); %>
+				</div>
+			</div>
+		  <% } %>
+
+		  <% if(achievements) { %>
+		  	<div class="mt-3 max-width p-4 bg-white" style="border-radius:10px;">
+		  		<h4 class="fw-bold">Logros</h4>
+				<div>
+		  			<% achievements.forEach((achievement) => { %>
+						<p class="small">
+							<strong><%=achievement[0]%></strong>
+							</br>
+							<%=achievement[1]%>
+							</br>
+							<%=achievement[2]%>
+						</p>
+					<% }); %>
+				</div>
+			</div>
+		  <% } %>
+
+
+		  <% if(skills) { %>
+		  	<div class="mt-3 max-width p-4 bg-white" style="border-radius:10px;">
+		  		<h4 class="fw-bold">Habilidades</h4>
+				<div>
+		  			<% skills.forEach((skill) => { %>
+						<p class="small">
+							<strong><%=skill[0]%></strong>
+							</br>
+							<%=skill[1]%> Aprobacion (es)
+						</p>
+					<% }); %>
+				</div>
+			</div>
+		  <% } %>
+
+
+
+
             </div>
 
     
@@ -63,9 +150,9 @@
 	  			</div>
 	  			<div class="modal-body">
 	  				<section class="mb-4">
-              			<h6>Informacion de contacto</h6>
-              			<p id="userEmail" class="small my-0">Correo electronico: </p>
-              			<p id="userPhone" class="small my-0">Telefono: </p>
+              					<h6>Informacion de contacto</h6>
+						<p id="userEmail" class="small my-0">Correo electronico: <%=personalInfo[3]%></p>
+						<p id="userPhone" class="small my-0">Telefono: <%=personalInfo[6]%></p>
 					</section>
 				</div>
 				</div>
@@ -267,39 +354,5 @@
 
 
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/Profile.js"></script>
-    <script>
-    	document.querySelector("a#followButton").addEventListener("click", Profile.follow.bind(null));
-    	document.querySelector("a#connectButton").addEventListener("click", Profile.connect.bind(null));
-    	
-    	document.querySelector("button#sendSkillButton").addEventListener("click", Profile.addSkill.bind(null, document.querySelector("select#skills")));
-    	//
-    	document.querySelector("button#sendAchievementButton").
-    		addEventListener("click", Profile.addAchievement.bind(null,
-    				document.querySelector("input#achievementTitle"),
-    				document.querySelector("select#achievementSchools"),
-    				document.querySelector("select#achievementTypes"),
-    				document.querySelector("input#achievementDate")
-    			)
-    		);
-    	//
-    	document.querySelector("button#sendEducationButton").
-    		addEventListener("click", Profile.addEducation.bind(null,
-    				document.querySelector("input#educationTitle"),
-    				document.querySelector("select#educationSchools"),
-    				document.querySelector("input#educationStartDate"),
-    				document.querySelector("input#educationEndDate")
-    			)
-    		);
-    	//
-    	document.querySelector("button#sendExperienceButton").
-    		addEventListener("click", Profile.addExperience.bind(null,
-    				document.querySelector("input#jobPosition"),
-    				document.querySelector("select#companies"),
-    				document.querySelector("input#experienceStartDate"),
-    				document.querySelector("input#experienceEndDate")
-    			)
-    		);
-    </script>
   </body>
 </html>

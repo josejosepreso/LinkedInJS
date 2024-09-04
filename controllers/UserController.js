@@ -80,7 +80,7 @@ export const home = async (req, res) => {
 				B.CODIGO_USUARIO_SIGUIENDO,
 				C.NOMBRE || ' ' || C.APELLIDO AS USUARIO,
 				A.CONTENIDO,
-				TO_CHAR(A.FECHA_PUBLICACION, 'DD/MM/YY') AS FECHA_PUBLICACION,
+				TO_CHAR(A.FECHA_PUBLICACION, 'DD-MM-YY') AS FECHA_PUBLICACION,
 				D.CANTIDAD_REACCIONES,
 				E.CANTIDAD_COMENTARIOS,
 				C.NOMBRE_FOTO_PERFIL
@@ -145,11 +145,128 @@ export const home = async (req, res) => {
 	}
 
 	res.render('home', {
-		name: req.session.user.name,
-		photo: req.session.user.photo,
+		user: req.session.user,
 		posts: posts,
 		currentJob: currentJob,
 		notFollowed: notFollowed
+	});
+};
+
+export const profile = async (req, res) => {
+
+	const id = req.query.id;
+
+	let connection;
+
+	let personalInfo = [];
+	let experiences = [];
+	let education = [];
+	let achievements = [];
+	let skills = [];
+
+	try {
+
+		connection = await oracledb.getConnection({ user: DATABASE_USER, password: DATABASE_PASSWORD, connectionString: DATABASE_URL});
+
+		let result;
+
+		result = await connection.execute(
+			`WITH PUESTO_ACTUAL AS (
+				SELECT  A.CODIGO_USUARIO,
+					A.PUESTO || ' en '  || B.NOMBRE AS PUESTO_ACTUAL
+				FROM 	TBL_EXPERIENCIAS_LABORALES A,
+					TBL_EMPRESAS B
+				WHERE A.CODIGO_EMPRESA = B.CODIGO_EMPRESA
+				AND FECHA_FIN IS NULL
+			)
+			SELECT 	A.NOMBRE || ' ' || A.APELLIDO AS NOMBRE_COMPLETO,
+				A.NOMBRE_FOTO_PERFIL,
+				B.PUESTO_ACTUAL,
+				A.CORREO,
+				C.NOMBRE_LUGAR || ', ' || D.NOMBRE_LUGAR AS LUGAR_RESIDENCIA,
+				A.DESCRIPCION,
+				A.TELEFONO
+			FROM TBL_USUARIOS A,PUESTO_ACTUAL B,TBL_LUGARES C,TBL_LUGARES D
+			WHERE A.CODIGO_USUARIO = B.CODIGO_USUARIO (+)
+			AND C.CODIGO_LUGAR = A.LUGAR_RESIDENCIA
+			AND C.CODIGO_LUGAR_SUPERIOR = D.CODIGO_LUGAR
+			AND A.CODIGO_USUARIO = ${id}`
+		);
+
+		personalInfo = result.rows[0];
+
+		result = await connection.execute(
+			`SELECT A.PUESTO,
+				B.NOMBRE AS EMPRESA,
+				A.FECHA_INICIO || ' - ' || NVL(TO_CHAR(A.FECHA_FIN),'Ahora') AS TIEMPO
+			FROM 	TBL_EXPERIENCIAS_LABORALES A,
+				TBL_EMPRESAS B
+			WHERE A.CODIGO_EMPRESA = B.CODIGO_EMPRESA
+			AND A.CODIGO_USUARIO = ${id}`
+		);
+
+		experiences = result.rows;
+
+		result = await connection.execute(
+			`SELECT	A.TITULO,B.NOMBRE AS INSTITUCION,
+				A.FECHA_INICIO || ' - ' || NVL(TO_CHAR(A.FECHA_FIN),'Ahora') AS TIEMPO
+			FROM	TBL_TITULOS_ACADEMICOS A,
+				TBL_INSTITUCIONES B
+			WHERE B.CODIGO_INSTITUCION = A.CODIGO_INSTITUCION
+			AND CODIGO_USUARIO = ${id}`
+		);
+
+		education = result.rows;
+
+		result = await connection.execute(
+			`SELECT	A.TITULO || ' (' || B.NOMBRE || ')' AS TITULO,
+				C.NOMBRE AS INSTITUCION,
+				TO_CHAR(A.FECHA_OBTENCION, 'DD-MM-YY') AS FECHA_OBTENCION
+			FROM 	TBL_LOGROS A,
+				TBL_TIPOS_LOGROS B,
+				TBL_INSTITUCIONES C
+			WHERE A.CODIGO_TIPO_LOGRO = B.CODIGO_TIPO_LOGRO
+			AND C.CODIGO_INSTITUCION = A.REMITIDO_POR
+			AND A.CODIGO_USUARIO = ${id}`
+		);
+
+		achievements = result.rows;
+
+		result = await connection.execute(
+			`WITH APROBACIONES AS (
+				SELECT  CODIGO_USUARIO,
+					CODIGO_HABILIDAD,
+					COUNT(*) AS NUMERO_APROBACIONES
+				FROM TBL_APROBACIONES_HABILIDADES
+				GROUP BY CODIGO_USUARIO,CODIGO_HABILIDAD
+			)
+			SELECT	C.NOMBRE AS HABILIDAD,
+				NVL(B.NUMERO_APROBACIONES,0) AS APROBACIONES
+			FROM 	TBL_HABILIDADES_POR_USUARIOS A,
+				APROBACIONES B,
+				TBL_HABILIDADES C
+			WHERE A.CODIGO_HABILIDAD = B.CODIGO_HABILIDAD (+)
+			AND A.CODIGO_USUARIO = B.CODIGO_USUARIO (+)
+			AND C.CODIGO_HABILIDAD = A.CODIGO_HABILIDAD
+			AND A.CODIGO_USUARIO = ${id}`
+		);
+
+		skills = result.rows;
+	} catch(error) {
+
+		console.log(error);
+	}
+
+	const flag = (parseInt(id) === req.session.user.id) ? true : false;
+
+	res.render('profile', {
+		user: req.session.user,
+		personalInfo: personalInfo,
+		experiences: experiences,
+		education: education,
+		achievements: achievements,
+		skills: skills,
+		flag: flag
 	});
 };
 
@@ -160,7 +277,4 @@ export const signout = (req, res) => {
 	res.redirect('/');
 };
 
-export const profile = (req, res) => {
 
-	res.render('profile');
-};

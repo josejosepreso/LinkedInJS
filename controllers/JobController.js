@@ -45,5 +45,8 @@ export const getJobs = async (req, res) => {
 		console.log(error);
 	}
 
-	res.render('jobs', { jobs: jobs });
+	res.render('jobs', {
+		user: req.session.user,
+		jobs: jobs
+	});
 };

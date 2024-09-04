@@ -7,7 +7,7 @@
   </head>
   <body id="home">
 
-	  <%- include('partials/navbar.ejs', {photo:photo}) %>
+  <%- include('partials/navbar.ejs', {photo:user.photo, id:user.id}) %>
 
   <main class="position-relative pt-3 pt-lg-4">
     <div class="container">
@@ -22,11 +22,11 @@
                 <div class="card">
 
                   <div class="p-3 d-flex justify-content-center">
-		  	<img id="currentUserPhoto" class="main-profile-photo" src="/img/<%=photo%>">
+		  	<img id="currentUserPhoto" class="main-profile-photo" src="/img/<%=user.photo%>">
                   </div>
 
                   <div class="card-body d-flex flex-column align-items-center">
-		  	<h5 id="currentUserName" class="card-title fw-bold"><%=name%></h5>
+		  	<h5 id="currentUserName" class="card-title fw-bold"><%=user.name%></h5>
 			<p id="currentUserJob" class="small card-text m-0"><%=currentJob%></p>
                   </div>
 
@@ -72,7 +72,7 @@
 
             <div class="bg-white mt-1 px-3 py-2 start-a-post">
               <div class="d-flex align-items-center">
-	      	<img class="me-3" id="middle-profile-photo" src="/img/<%=photo%>" alt="profile photo">
+	      	<img class="me-3" id="middle-profile-photo" src="/img/<%=user.photo%>" alt="profile photo">
 
                 <a id="createPost" style="border-radius:30px;cursor:pointer;" class="form-control p-2 ps-3 fw-bold">Crear publicacion</a>
 
@@ -209,7 +209,7 @@
 	      	<div class="d-flex mb-3">
 	      		<img class="suggestions-logo me-3" src="/img/<%=user[3]%>">
 	      	    	<div>
-	      			<a href="profile.jsp?id=<%=user[0]%>" class="text-decoration-none">
+	      			<a href="/profile?id=<%=user[0]%>" class="text-decoration-none">
 	      		       		<span class="suggestions-name"><%=user[1]%></span>
 	      			</a>
 	      			<p class="mb-2 small"><%=user[2]%></p>
