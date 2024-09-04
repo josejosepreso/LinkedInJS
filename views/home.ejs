@@ -7,7 +7,7 @@
   </head>
   <body id="home">
 
-	  <%- include('partials/navbar.ejs') %>
+	  <%- include('partials/navbar.ejs', {photo:photo}) %>
 
   <main class="position-relative pt-3 pt-lg-4">
     <div class="container">
@@ -22,12 +22,12 @@
                 <div class="card">
 
                   <div class="p-3 d-flex justify-content-center">
-                    <img id="currentUserPhoto" class="main-profile-photo" src="">
+		  	<img id="currentUserPhoto" class="main-profile-photo" src="/img/<%=photo%>">
                   </div>
 
                   <div class="card-body d-flex flex-column align-items-center">
-                    <h5 id="currentUserName" class="card-title fw-bold"></h5>
-                    <p id="currentUserJob" class="small card-text m-0"></p>
+		  	<h5 id="currentUserName" class="card-title fw-bold"><%=name%></h5>
+			<p id="currentUserJob" class="small card-text m-0"><%=currentJob%></p>
                   </div>
 
                   <ul class="list-group d-none d-lg-block list-group-flush">
@@ -72,7 +72,7 @@
 
             <div class="bg-white mt-1 px-3 py-2 start-a-post">
               <div class="d-flex align-items-center">
-                <img class="me-3" id="middle-profile-photo" src="" alt="profile photo">
+	      	<img class="me-3" id="middle-profile-photo" src="/img/<%=photo%>" alt="profile photo">
 
                 <a id="createPost" style="border-radius:30px;cursor:pointer;" class="form-control p-2 ps-3 fw-bold">Crear publicacion</a>
 
@@ -136,6 +136,50 @@
 
 
           <div id="posts">
+
+		  <% posts.forEach((post) => { %>
+
+		  	<div id="post-<=%post[0]%>" class="bg-white my-3 py-2 posts">
+				<div class="px-3 my-d d-flex justify-content-between align-items-center">
+					<div>
+						<img class="me-2 post-profile-photo" src="/img/<%=post[8]%>">
+						<a class="text-dark fw-bold" href="/profile?id=<%=post[2]%>"><%=post[3]%></a>
+					</div>
+					<small><%=post[5]%></small>
+				</div>
+
+				<div class="px-3 mt-3">
+					<p class="post-content main-text">
+						<%=post[4]%>
+					</p>
+				</div>
+
+              			<div class="d-flex align-items-center border-bottom px-3 p-1 mb-2 justify-content-between">
+              				<div class="d-flex align-items-center">
+              					<p class="m-0 small-font-size">
+							<span id="reactionsAmount"><%=post[6]%></span> Reacciones
+              					</p>
+              			  	</div>
+              				<div class="d-flex justify-content-end text-center">
+						<p class="m-0 small-font-size"><%=post[7]%> Comentarios</p>
+              			  	</div>
+              			</div>
+
+				<script>
+
+					let reaction = "<%=post[1]%>";
+
+					if(reaction === "null") reaction = "Recomendar"
+				</script>
+
+				<% let reaction=post[1]; if(reaction===null) { reaction="Recomendar"; } %>
+
+				<%- include('partials/postButtons.ejs', {reaction: reaction}); %>
+			</div>
+
+		  <% }); %>
+
+
           </div>
 
         </div>
@@ -154,10 +198,26 @@
 
         <div class="mb-2">
           <div class="card" id="addToFeed">
+
             <div class="card-body d-flex justify-content-between align-items-center">
               <h6 class="fw-bold card-title m-0">Añadir a tu feed</h6>
+
             </div>
-            
+
+            <% notFollowed.forEach((user) => {%>
+	      <div class="card-body pt-0">
+	      	<div class="d-flex mb-3">
+	      		<img class="suggestions-logo me-3" src="/img/<%=user[3]%>">
+	      	    	<div>
+	      			<a href="profile.jsp?id=<%=user[0]%>" class="text-decoration-none">
+	      		       		<span class="suggestions-name"><%=user[1]%></span>
+	      			</a>
+	      			<p class="mb-2 small"><%=user[2]%></p>
+	      		</div>
+	      	</div>
+	      </div>
+	    <% }); %>
+
           </div>
         </div>
 

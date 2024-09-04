@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 const form = document.querySelector("form#login-form");
 const answer = document.querySelector("div#answer");
 
@@ -26,13 +22,14 @@ async function login(e) {
 
 		if(res.redirected) {
 
-			answer.innerHTML = "Inicio sesion exitosamente";
+			answer.textContent = "Inicio sesion exitosamente";
 
 			window.location.href = res.url;
-		} else {
 
-			answer.innerHTML = "Usuario no encontrado";
+			return;
 		}
+
+		answer.textContent = "Usuario no encontrado";
 	} catch(error) {
 
 		console.log(error);
