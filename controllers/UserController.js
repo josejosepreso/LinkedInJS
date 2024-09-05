@@ -1,15 +1,15 @@
 import oracledb from 'oracledb';
 
-const DATABASE_USER = process.env.DATABASE_USER;
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
-const DATABASE_URL = process.env.DATABASE_URL;
-
 export const login = async (req, res) => {
 
 	let connection;
 	try {
 
-		connection = await oracledb.getConnection({ user: DATABASE_USER, password: DATABASE_PASSWORD, connectionString: DATABASE_URL });
+		connection = await oracledb.getConnection({
+			user: process.env.DATABASE_USER,
+			password: process.env.DATABASE_PASSWORD,
+			connectionString: process.env.DATABASE_URL
+		});
 
 		const result = await connection.execute(`
 			SELECT * FROM TBL_USUARIOS WHERE CORREO = '${req.body.email}' AND CONTRASENA = '${req.body.password}'
@@ -47,7 +47,11 @@ export const home = async (req, res) => {
 
 	try {
 
-		connection = await oracledb.getConnection({ user: DATABASE_USER, password: DATABASE_PASSWORD, connectionString: DATABASE_URL });
+		connection = await oracledb.getConnection({
+			user: process.env.DATABASE_USER,
+			password: process.env.DATABASE_PASSWORD,
+			connectionString: process.env.DATABASE_URL
+		});
 
 		let result;
 
@@ -166,7 +170,11 @@ export const profile = async (req, res) => {
 
 	try {
 
-		connection = await oracledb.getConnection({ user: DATABASE_USER, password: DATABASE_PASSWORD, connectionString: DATABASE_URL});
+		connection = await oracledb.getConnection({
+			user: process.env.DATABASE_USER,
+			password: process.env.DATABASE_PASSWORD,
+			connectionString: process.env.DATABASE_URL
+		});
 
 		let result;
 
